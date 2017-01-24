@@ -2,10 +2,8 @@
 
 
 
-  
 
-
-<html class="theme-next muse use-motion" lang="en">
+<html class="theme-next pisces" lang="en">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -84,31 +82,22 @@
 
 
 
-<meta name="description" content="参考：Ansible Best Practices
+<meta name="description" content="参考:Ansible Best Practices
 内容组织：
-使用“roles”组织特性
-推荐目录结构 - 1
-
-12345678910111213141516171819202122232425262728293031323334353637383940production                # inventory file for production serversstagin">
+使用“roles”组织特性">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ansible Best Practices Summary">
 <meta property="og:url" content="http://yoursite.com/2017/01/24/ansible-best-practice-summary/index.html">
 <meta property="og:site_name" content="Lanourain's blog">
-<meta property="og:description" content="参考：Ansible Best Practices
+<meta property="og:description" content="参考:Ansible Best Practices
 内容组织：
-使用“roles”组织特性
-推荐目录结构 - 1
-
-12345678910111213141516171819202122232425262728293031323334353637383940production                # inventory file for production serversstagin">
-<meta property="og:updated_time" content="2017-01-24T07:52:22.000Z">
+使用“roles”组织特性">
+<meta property="og:updated_time" content="2017-01-24T07:55:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ansible Best Practices Summary">
-<meta name="twitter:description" content="参考：Ansible Best Practices
+<meta name="twitter:description" content="参考:Ansible Best Practices
 内容组织：
-使用“roles”组织特性
-推荐目录结构 - 1
-
-12345678910111213141516171819202122232425262728293031323334353637383940production                # inventory file for production serversstagin">
+使用“roles”组织特性">
 
 
 
@@ -116,10 +105,10 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
-    motion: true,
+    motion: false,
     duoshuo: {
       userId: '0',
       author: 'Author'
@@ -352,9 +341,12 @@
       
 
       
-        <p>参考：<a href="http://docs.ansible.com/ansible/playbooks_best_practices.html#best-practices" target="_blank" rel="external">Ansible Best Practices</a></p>
+        <h4 id="参考"><a href="#参考" class="headerlink" title="参考:"></a>参考:</h4><p><a href="http://docs.ansible.com/ansible/playbooks_best_practices.html#best-practices" target="_blank" rel="external">Ansible Best Practices</a></p>
 <h4 id="内容组织："><a href="#内容组织：" class="headerlink" title="内容组织："></a>内容组织：</h4><ul>
 <li>使用“roles”组织特性</li>
+</ul>
+<a id="more"></a>
+<ul>
 <li>推荐目录结构 - 1</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">production                # inventory file for production servers</div><div class="line">staging                   # inventory file for staging environment</div><div class="line"></div><div class="line">group_vars/</div><div class="line">   group1                 # here we assign variables to particular groups</div><div class="line">   group2                 # &quot;&quot;</div><div class="line">host_vars/</div><div class="line">   hostname1              # if systems need specific variables, put them here</div><div class="line">   hostname2              # &quot;&quot;</div><div class="line"></div><div class="line">library/                  # if any custom modules, put them here (optional)</div><div class="line">filter_plugins/           # if any custom filter plugins, put them here (optional)</div><div class="line"></div><div class="line">site.yml                  # master playbook</div><div class="line">webservers.yml            # playbook for webserver tier</div><div class="line">dbservers.yml             # playbook for dbserver tier</div><div class="line"></div><div class="line">roles/</div><div class="line">    common/               # this hierarchy represents a &quot;role&quot;</div><div class="line">        tasks/            #</div><div class="line">            main.yml      #  &lt;-- tasks file can include smaller files if warranted</div><div class="line">        handlers/         #</div><div class="line">            main.yml      #  &lt;-- handlers file</div><div class="line">        templates/        #  &lt;-- files for use with the template resource</div><div class="line">            ntp.conf.j2   #  &lt;------- templates end in .j2</div><div class="line">        files/            #</div><div class="line">            bar.txt       #  &lt;-- files for use with the copy resource</div><div class="line">            foo.sh        #  &lt;-- script files for use with the script resource</div><div class="line">        vars/             #</div><div class="line">            main.yml      #  &lt;-- variables associated with this role</div><div class="line">        defaults/         #</div><div class="line">            main.yml      #  &lt;-- default lower priority variables for this role</div><div class="line">        meta/             #</div><div class="line">            main.yml      #  &lt;-- role dependencies</div><div class="line">        library/          # roles can also include custom modules</div><div class="line">        lookup_plugins/   # or other types of plugins, like lookup in this case</div><div class="line"></div><div class="line">    webtier/              # same kind of structure as &quot;common&quot; was above, done for the webtier role</div><div class="line">    monitoring/           # &quot;&quot;</div><div class="line">    fooapp/               # &quot;&quot;</div></pre></td></tr></table></figure>
@@ -390,7 +382,7 @@
 <ul>
 <li>使用 Role 组织 Task 和 Handler</li>
 </ul>
-<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><ul>
+<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><ul>
 <li>多环境使用策略：不同环境（生产或测试）使用不同的inventory配置文件，使用 -i 来选择对应的配置</li>
 <li>标明 modules的状态，不管 state 是 present 或 absent</li>
 <li>对不同角色的host进行分组(groups)</li>
@@ -562,7 +554,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#内容组织："><span class="nav-number">1.</span> <span class="nav-text">内容组织：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number"></span> <span class="nav-text">其他</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#参考"><span class="nav-number">1.</span> <span class="nav-text">参考:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内容组织："><span class="nav-number">2.</span> <span class="nav-text">内容组织：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他"><span class="nav-number">3.</span> <span class="nav-text">其他</span></a></li></ol></div>
             
 
           </div>
@@ -598,7 +590,7 @@
 <div class="theme-info">
   Theme -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Pisces
   </a>
 </div>
 
@@ -665,6 +657,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
