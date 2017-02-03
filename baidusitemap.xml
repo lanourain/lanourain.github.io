@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+
+    
+  <url>
+    <loc>http://lanourain.github.io/2017/01/24/ansible-best-practice-summary/</loc>
+    <lastmod>2017-02-03T04:43:13.000Z</lastmod>
+    <data>
+        <display>
+        <title>Ansible Best Practices Summary</title>
+        <pubTime>2017-01-24T10:14:33.000Z</pubTime>
+        
+        <tag>ansible</tag>
+         
+         
+           
+             
+              <breadCrumb title="ansible" url="http://lanourain.github.io/categories/ansible/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://lanourain.github.io/2017/01/12/2017-%E5%B9%B4%E5%BA%A6%E8%AE%A1%E5%88%92/</loc>
+    <lastmod>2017-02-03T03:21:50.000Z</lastmod>
+    <data>
+        <display>
+        <title>2017_年度计划</title>
+        <pubTime>2017-01-12T08:06:04.000Z</pubTime>
+        
+        <tag>daily</tag>
+         
+         
+           
+             
+              <breadCrumb title="daily" url="http://lanourain.github.io/categories/daily/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+</urlset>
