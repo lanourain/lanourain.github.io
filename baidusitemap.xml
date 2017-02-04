@@ -4,6 +4,86 @@
 
     
   <url>
+    <loc>http://lanourain.github.io/2016/05/16/The-Willpower-Instinct-note/</loc>
+    <lastmod>2017-02-04T05:33:42.000Z</lastmod>
+    <data>
+        <display>
+        <title>《自控力》笔记</title>
+        <pubTime>2016-05-16T04:43:37.000Z</pubTime>
+        
+        <tag>Reading</tag>
+         
+         
+           
+             
+              <breadCrumb title="Daily" url="http://lanourain.github.io/categories/Daily/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://lanourain.github.io/2017/01/24/ansible-best-practice-summary/</loc>
+    <lastmod>2017-02-04T01:25:14.000Z</lastmod>
+    <data>
+        <display>
+        <title>Ansible Best Practices Summary</title>
+        <pubTime>2017-01-24T10:14:33.000Z</pubTime>
+        
+        <tag>ansible</tag>
+         
+         
+           
+             
+              <breadCrumb title="ansible" url="http://lanourain.github.io/categories/ansible/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://lanourain.github.io/2017/02/03/version_control/</loc>
+    <lastmod>2017-02-04T01:06:03.000Z</lastmod>
+    <data>
+        <display>
+        <title>项目版本管理模型</title>
+        <pubTime>2017-02-03T10:14:33.000Z</pubTime>
+        
+        <tag>project</tag>
+         
+         
+           
+             
+              <breadCrumb title="project" url="http://lanourain.github.io/categories/project/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://lanourain.github.io/2016/07/04/Facts-and-fallacies-of-software-engineering/</loc>
+    <lastmod>2017-02-03T14:03:04.000Z</lastmod>
+    <data>
+        <display>
+        <title>《软件工程的事实与谬论》读书笔记</title>
+        <pubTime>2016-07-04T05:17:43.000Z</pubTime>
+        
+        <tag>软件工程</tag>
+         
+         
+           
+             
+              <breadCrumb title="软件工程" url="http://lanourain.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://lanourain.github.io/2017/01/12/2017-year-plan/</loc>
     <lastmod>2017-02-03T06:52:20.000Z</lastmod>
     <data>
@@ -17,26 +97,6 @@
            
              
               <breadCrumb title="daily" url="http://lanourain.github.io/categories/daily/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://lanourain.github.io/2017/01/24/ansible-best-practice-summary/</loc>
-    <lastmod>2017-02-03T06:51:51.000Z</lastmod>
-    <data>
-        <display>
-        <title>Ansible Best Practices Summary</title>
-        <pubTime>2017-01-24T10:14:33.000Z</pubTime>
-        
-        <tag>ansible</tag>
-         
-         
-           
-             
-              <breadCrumb title="ansible" url="http://lanourain.github.io/categories/ansible/"/>
           
         </display>
     </data>
