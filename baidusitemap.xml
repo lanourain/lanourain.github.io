@@ -4,6 +4,48 @@
 
     
   <url>
+    <loc>http://lanourain.github.io/2016/12/18/debugging-teams/</loc>
+    <lastmod>2017-02-04T15:38:33.000Z</lastmod>
+    <data>
+        <display>
+        <title>《进化-从孤胆极客到高效团队》笔记</title>
+        <pubTime>2016-12-18T08:26:01.000Z</pubTime>
+        
+        <tag>Team</tag>
+         
+        <tag>Management</tag>
+         
+         
+           
+             
+              <breadCrumb title="Team" url="http://lanourain.github.io/categories/Team/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://lanourain.github.io/2017/01/24/ansible-best-practice-summary/</loc>
+    <lastmod>2017-02-04T09:42:32.000Z</lastmod>
+    <data>
+        <display>
+        <title>Ansible Best Practices Summary</title>
+        <pubTime>2017-01-24T10:14:33.000Z</pubTime>
+        
+        <tag>ansible</tag>
+         
+         
+           
+             
+              <breadCrumb title="ansible" url="http://lanourain.github.io/categories/ansible/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://lanourain.github.io/2016/05/16/The-Willpower-Instinct-note/</loc>
     <lastmod>2017-02-04T05:33:42.000Z</lastmod>
     <data>
@@ -17,26 +59,6 @@
            
              
               <breadCrumb title="Daily" url="http://lanourain.github.io/categories/Daily/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://lanourain.github.io/2017/01/24/ansible-best-practice-summary/</loc>
-    <lastmod>2017-02-04T01:25:14.000Z</lastmod>
-    <data>
-        <display>
-        <title>Ansible Best Practices Summary</title>
-        <pubTime>2017-01-24T10:14:33.000Z</pubTime>
-        
-        <tag>ansible</tag>
-         
-         
-           
-             
-              <breadCrumb title="ansible" url="http://lanourain.github.io/categories/ansible/"/>
           
         </display>
     </data>
