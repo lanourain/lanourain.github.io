@@ -4,6 +4,66 @@
 
     
   <url>
+    <loc>http://lanourain.github.io/2017/02/16/ansible_basic/</loc>
+    <lastmod>2017-02-16T07:04:27.000Z</lastmod>
+    <data>
+        <display>
+        <title>ansible基础教程</title>
+        <pubTime>2017-02-15T16:00:00.000Z</pubTime>
+        
+        <tag>ansible</tag>
+         
+         
+           
+             
+              <breadCrumb title="ansible" url="http://lanourain.github.io/categories/ansible/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://lanourain.github.io/2017/01/24/ansible-best-practice-summary/</loc>
+    <lastmod>2017-02-15T09:20:32.000Z</lastmod>
+    <data>
+        <display>
+        <title>Ansible Best Practices Summary</title>
+        <pubTime>2017-01-24T10:14:33.000Z</pubTime>
+        
+        <tag>ansible</tag>
+         
+         
+           
+             
+              <breadCrumb title="ansible" url="http://lanourain.github.io/categories/ansible/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://lanourain.github.io/2017/01/12/2017-year-plan/</loc>
+    <lastmod>2017-02-10T14:09:09.000Z</lastmod>
+    <data>
+        <display>
+        <title>2017年度计划</title>
+        <pubTime>2017-01-12T08:06:04.000Z</pubTime>
+        
+        <tag>daily</tag>
+         
+         
+           
+             
+              <breadCrumb title="daily" url="http://lanourain.github.io/categories/daily/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://lanourain.github.io/2016/12/18/debugging-teams/</loc>
     <lastmod>2017-02-04T15:38:33.000Z</lastmod>
     <data>
@@ -19,26 +79,6 @@
            
              
               <breadCrumb title="Team" url="http://lanourain.github.io/categories/Team/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://lanourain.github.io/2017/01/24/ansible-best-practice-summary/</loc>
-    <lastmod>2017-02-04T09:42:32.000Z</lastmod>
-    <data>
-        <display>
-        <title>Ansible Best Practices Summary</title>
-        <pubTime>2017-01-24T10:14:33.000Z</pubTime>
-        
-        <tag>ansible</tag>
-         
-         
-           
-             
-              <breadCrumb title="ansible" url="http://lanourain.github.io/categories/ansible/"/>
           
         </display>
     </data>
@@ -99,26 +139,6 @@
            
              
               <breadCrumb title="软件工程" url="http://lanourain.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://lanourain.github.io/2017/01/12/2017-year-plan/</loc>
-    <lastmod>2017-02-03T06:52:20.000Z</lastmod>
-    <data>
-        <display>
-        <title>2017年度计划</title>
-        <pubTime>2017-01-12T08:06:04.000Z</pubTime>
-        
-        <tag>daily</tag>
-         
-         
-           
-             
-              <breadCrumb title="daily" url="http://lanourain.github.io/categories/daily/"/>
           
         </display>
     </data>
