@@ -3,7 +3,7 @@
 <li>Subject：proxy 和 RealSubject 的公共对外方法</li>
 <li>RealSubject：真实实现逻辑的类，对Client不可见</li>
 <li>Proxy：用来代理和封装 RealSubject</li>
-<li>Client：使用 Subject 和 Proxy 完成工作<br><img src="media/14888931964804.jpg" alt=""></li>
+<li>Client：使用 Subject 和 Proxy 完成工作<br><img src="http://i.imgur.com/lhuTbIF.jpg" alt=""></li>
 </ul>
 <h4 id="使用举例"><a href="#使用举例" class="headerlink" title="使用举例"></a>使用举例</h4><h5 id="1-延迟加载"><a href="#1-延迟加载" class="headerlink" title="1. 延迟加载"></a>1. 延迟加载</h5><p>假设有个功能组件，初始化它十分耗费资源。实际情况中，如果该组件未被实际使用，则该初始化属于资源浪费。因此，我们可以考虑如果当前并没有使用这个组件，则不需要真正地初始化它，先使用一个代理对象替代它的原有的位置，只要在真正需要的时候才对它进行加载。</p>
 <p>下面用一个数据库查询的操作作为例子（假设查询前需要连接数据库比较耗时）</p>
