@@ -4,6 +4,51 @@
 
     
   <url>
+    <loc>http://lanourain.github.io/2017/03/08/proxy_pattern_and_dynamic_proxy/</loc>
+    <lastmod>2017-03-08T14:07:31.000Z</lastmod>
+    <data>
+        <display>
+        <title>代理模式和动态代理</title>
+        <pubTime>2017-03-07T16:00:00.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+        <tag>design_patterns</tag>
+         
+         
+           
+             
+              <breadCrumb title="java" url="http://lanourain.github.io/categories/java/"/>
+          
+             
+              <breadCrumb title="design_patterns" url="http://lanourain.github.io/categories/java/design-patterns/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://lanourain.github.io/2017/01/12/2017-year-plan/</loc>
+    <lastmod>2017-03-02T03:29:27.000Z</lastmod>
+    <data>
+        <display>
+        <title>2017年度计划</title>
+        <pubTime>2017-01-12T08:06:04.000Z</pubTime>
+        
+        <tag>daily</tag>
+         
+         
+           
+             
+              <breadCrumb title="daily" url="http://lanourain.github.io/categories/daily/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://lanourain.github.io/2017/02/16/ansible_basic/</loc>
     <lastmod>2017-02-16T07:04:27.000Z</lastmod>
     <data>
@@ -37,26 +82,6 @@
            
              
               <breadCrumb title="ansible" url="http://lanourain.github.io/categories/ansible/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://lanourain.github.io/2017/01/12/2017-year-plan/</loc>
-    <lastmod>2017-02-10T14:09:09.000Z</lastmod>
-    <data>
-        <display>
-        <title>2017年度计划</title>
-        <pubTime>2017-01-12T08:06:04.000Z</pubTime>
-        
-        <tag>daily</tag>
-         
-         
-           
-             
-              <breadCrumb title="daily" url="http://lanourain.github.io/categories/daily/"/>
           
         </display>
     </data>
