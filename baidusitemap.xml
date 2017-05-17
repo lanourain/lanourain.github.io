@@ -4,12 +4,12 @@
 
     
   <url>
-    <loc>http://lanourain.github.io/2017/04/17/promise_patterns/</loc>
-    <lastmod>2017-04-17T10:26:13.000Z</lastmod>
+    <loc>http://lanourain.github.io/2017/05/17/singleton/</loc>
+    <lastmod>2017-05-17T09:24:58.000Z</lastmod>
     <data>
         <display>
-        <title>Promise模式</title>
-        <pubTime>2017-04-16T16:00:00.000Z</pubTime>
+        <title>单例模式</title>
+        <pubTime>2017-05-16T16:00:00.000Z</pubTime>
         
         <tag>java</tag>
          
@@ -23,14 +23,52 @@
 
     
   <url>
+    <loc>http://lanourain.github.io/2016/12/18/debugging-teams/</loc>
+    <lastmod>2017-05-10T02:48:01.000Z</lastmod>
+    <data>
+        <display>
+        <title>《进化-从孤胆极客到高效团队》笔记</title>
+        <pubTime>2016-12-18T08:26:01.000Z</pubTime>
+        
+        <tag>Team</tag>
+         
+        <tag>Management</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://lanourain.github.io/2017/01/12/2017-year-plan/</loc>
-    <lastmod>2017-04-06T09:11:56.000Z</lastmod>
+    <lastmod>2017-05-03T08:42:17.000Z</lastmod>
     <data>
         <display>
         <title>2017年度计划</title>
         <pubTime>2017-01-12T08:06:04.000Z</pubTime>
         
         <tag>daily</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://lanourain.github.io/2017/04/17/promise_patterns/</loc>
+    <lastmod>2017-04-17T10:26:13.000Z</lastmod>
+    <data>
+        <display>
+        <title>Promise模式</title>
+        <pubTime>2017-04-16T16:00:00.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+        <tag>design_patterns</tag>
          
          
            
@@ -124,25 +162,6 @@
         <tag>java</tag>
          
         <tag>design_patterns</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://lanourain.github.io/2016/12/18/debugging-teams/</loc>
-    <lastmod>2017-03-19T15:11:32.000Z</lastmod>
-    <data>
-        <display>
-        <title>《进化-从孤胆极客到高效团队》笔记</title>
-        <pubTime>2016-12-18T08:26:01.000Z</pubTime>
-        
-        <tag>Team</tag>
-         
-        <tag>Management</tag>
          
          
            

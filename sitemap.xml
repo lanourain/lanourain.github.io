@@ -2,16 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://lanourain.github.io/2017/04/17/promise_patterns/</loc>
+    <loc>http://lanourain.github.io/2017/05/17/singleton/</loc>
     
-    <lastmod>2017-04-17T10:26:13.000Z</lastmod>
+    <lastmod>2017-05-17T09:24:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lanourain.github.io/2016/12/18/debugging-teams/</loc>
+    
+    <lastmod>2017-05-10T02:48:01.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://lanourain.github.io/2017/01/12/2017-year-plan/</loc>
     
-    <lastmod>2017-04-06T09:11:56.000Z</lastmod>
+    <lastmod>2017-05-03T08:42:17.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lanourain.github.io/2017/04/17/promise_patterns/</loc>
+    
+    <lastmod>2017-04-17T10:26:13.000Z</lastmod>
     
   </url>
   
@@ -47,13 +61,6 @@
     <loc>http://lanourain.github.io/2017/03/08/proxy_pattern_and_dynamic_proxy/</loc>
     
     <lastmod>2017-03-19T15:11:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://lanourain.github.io/2016/12/18/debugging-teams/</loc>
-    
-    <lastmod>2017-03-19T15:11:32.000Z</lastmod>
     
   </url>
   
