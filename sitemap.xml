@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://lanourain.github.io/2017/06/20/JVM-1-Memory-Model/</loc>
+    
+    <lastmod>2017-06-25T14:38:57.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lanourain.github.io/2017/06/22/JVM-2-GC/</loc>
+    
+    <lastmod>2017-06-25T14:38:09.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://lanourain.github.io/2017/05/18/effective-java/</loc>
     
     <lastmod>2017-06-07T16:01:47.000Z</lastmod>

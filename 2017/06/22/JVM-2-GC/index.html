@@ -1,0 +1,120 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta name="google-site-verification" content="WIBYTs2Vy14HvrnHixbBGSFenycHFvmqQKvWEK4PogU"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="lanourain"><title>深入理解Java虚拟机 - 垃圾收集器与内存分配策略 | Lanourain's blog</title><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/5.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">深入理解Java虚拟机 - 垃圾收集器与内存分配策略</h1><a id="logo" href="/.">Lanourain's blog</a><p class="description">I fight, so you don't have to.</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">深入理解Java虚拟机 - 垃圾收集器与内存分配策略</h1><div class="post-meta">Jun 22, 2017<script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><a data-disqus-identifier="2017/06/22/JVM-2-GC/" href="/2017/06/22/JVM-2-GC/#disqus_thread" class="disqus-comment-count"></a><div class="post-content"><h3 id="垃圾收集器与内存分配策略"><a href="#垃圾收集器与内存分配策略" class="headerlink" title="垃圾收集器与内存分配策略"></a>垃圾收集器与内存分配策略</h3><p>垃圾回收三件事：哪些内存需要回收，什么时候回收，如何回收。</p>
+<h4 id="1-判断对象是否已不可能被任何途径使用"><a href="#1-判断对象是否已不可能被任何途径使用" class="headerlink" title="1. 判断对象是否已不可能被任何途径使用"></a>1. 判断对象是否已不可能被任何途径使用</h4><h5 id="引用计数法"><a href="#引用计数法" class="headerlink" title="引用计数法"></a>引用计数法</h5><ul>
+<li>对象添加引用计数器，有引用加一，引用失效减一，计数器为0时对象不可能再被使用。</li>
+<li>问题 ：很难解决循环引用的问题</li>
+</ul>
+<h5 id="可达性分析算法（主流使用）"><a href="#可达性分析算法（主流使用）" class="headerlink" title="可达性分析算法（主流使用）"></a>可达性分析算法（主流使用）</h5><ul>
+<li>选择一些对象作为起始点(GC Roots)，从这些节点向下搜索，如果有对象无法通过引用链和起始点相连，则证明该对象不可用</li>
+<li>GC Roots对象类型：<ul>
+<li>虚拟机栈中的对象</li>
+<li>方法区中静态属性引用的对象</li>
+<li>方法区中常量引用的对象</li>
+<li>本地方法栈中引用的对象</li>
+</ul>
+</li>
+</ul>
+<h5 id="引用分类"><a href="#引用分类" class="headerlink" title="引用分类"></a>引用分类</h5><p><img src="http://i.imgur.com/31d0sO8.jpg" alt=""></p>
+<h4 id="2-垃圾收集算法"><a href="#2-垃圾收集算法" class="headerlink" title="2. 垃圾收集算法"></a>2. 垃圾收集算法</h4><h5 id="标记-清除算法"><a href="#标记-清除算法" class="headerlink" title="标记 - 清除算法"></a>标记 - 清除算法</h5><ul>
+<li>思路：标记需要回收的对象，标记完成后统一回收</li>
+<li>不足：<ul>
+<li>标记和清除效率都不高</li>
+<li>会产生大量的内存碎片</li>
+</ul>
+</li>
+</ul>
+<h5 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h5><ul>
+<li>思路：可用内存分为大小相等的两块，每次只使用其中一块，该块内存用完了，将存活的对象赋值到另外一块上，该块全部清除</li>
+<li>不足：浪费了一半的内存</li>
+<li>常用来回收新生代，因为新生代对象大部分都生命周期短，并不需要按照1：1的比例来划分空间。</li>
+<li>（参考HotSpot默认Eden：Survivor = 8：1）<br><img src="http://i.imgur.com/UYpqLwK.jpg" alt=""></li>
+</ul>
+<h5 id="标记-整理算法"><a href="#标记-整理算法" class="headerlink" title="标记 - 整理算法"></a>标记 - 整理算法</h5><ul>
+<li>标记需要被清理的对象，然后让存活的对象都向一端移动，最后直接清理掉端边界以外的内存。</li>
+<li>常用来回收老年代</li>
+</ul>
+<h5 id="分代收集算法"><a href="#分代收集算法" class="headerlink" title="分代收集算法"></a>分代收集算法</h5><ul>
+<li>根据对象存活周期不同把内存划分为新生代和老年代，分别使用不同收集算法</li>
+</ul>
+<h4 id="3-HotSpot的算法实现"><a href="#3-HotSpot的算法实现" class="headerlink" title="3. HotSpot的算法实现"></a>3. HotSpot的算法实现</h4><p>在基础的存活判定和垃圾收集算法基础上，HotSpot在实现时考虑了多种提高执行效率的方法。</p>
+<ul>
+<li>使用准确式GC，快速得知哪些位置是引用，以此来快速枚举根节点（GC Roots），减少GC停顿（暂停所有线程进行GC操作）的时间</li>
+<li>设立安全点（程序长时间执行时），在线程达到安全点的时候才暂停。使用主动式中断让线程轮询某个标记位，标记位为真时自己中断挂起</li>
+<li>设立安全区域，对于没有分配CPU时间的线程（Sleep或Blocked）标记为安全区域，该线程要离开安全区域时需要先查看根节点是否枚举完或是GC已完成才可以离开。</li>
+</ul>
+<h4 id="4-垃圾收集器"><a href="#4-垃圾收集器" class="headerlink" title="4. 垃圾收集器"></a>4. 垃圾收集器</h4><ul>
+<li>HotSpot虚拟机包含的垃圾收集器<br><img src="http://i.imgur.com/7ROdPpb.jpg" alt=""></li>
+</ul>
+<h5 id="Serial-收集器"><a href="#Serial-收集器" class="headerlink" title="Serial 收集器"></a>Serial 收集器</h5><p><img src="http://i.imgur.com/sAx7t6l.jpg" alt=""></p>
+<ul>
+<li>单线程进行垃圾收集，垃圾收集时必须暂停其他所有工作线程。</li>
+</ul>
+<h5 id="ParNew-收集器"><a href="#ParNew-收集器" class="headerlink" title="ParNew 收集器"></a>ParNew 收集器</h5><p><img src="http://i.imgur.com/SereyH8.jpg" alt=""></p>
+<ul>
+<li>Serial收集器的多线程版本</li>
+</ul>
+<h5 id="Parallel-Scavenge-收集器"><a href="#Parallel-Scavenge-收集器" class="headerlink" title="Parallel Scavenge 收集器"></a>Parallel Scavenge 收集器</h5><p><img src="http://i.imgur.com/DeCfymc.jpg" alt=""></p>
+<ul>
+<li>使用复制算法 + 并行的多线程收集器</li>
+<li>其他收集器的目的是尽可能缩短GC停顿时间，而Parallel Scavenge的目的是达到一个可控制的吞吐量。缩短GC停顿侧重的是加快响应速度，而吞吐量则是为了高效率利用CPU时间，尽快完成任务。这主要适合在后台运算而不需要太多交互的任务。</li>
+<li>吞吐量 = 运行用户代码时间 / （运行用户代码时间 + 垃圾收集时间）</li>
+</ul>
+<h5 id="Serial-Old-收集器"><a href="#Serial-Old-收集器" class="headerlink" title="Serial Old 收集器"></a>Serial Old 收集器</h5><ul>
+<li>Serial 收集器的老年代版本，单线程，使用“标记-整理”算法。</li>
+</ul>
+<h5 id="Parallel-Old-收集器"><a href="#Parallel-Old-收集器" class="headerlink" title="Parallel Old 收集器"></a>Parallel Old 收集器</h5><ul>
+<li>Parallel Scavenge 收集器的老年代版本，多线程，使用“标记-整理”算法</li>
+<li>在注重吞吐量以及CPU资源敏感的场合，可以考虑使用Parallel Scavenge + Parallel Old的组合</li>
+</ul>
+<h5 id="CMS-Concurrent-Mark-Sweep-收集器"><a href="#CMS-Concurrent-Mark-Sweep-收集器" class="headerlink" title="CMS(Concurrent Mark Sweep) 收集器"></a>CMS(Concurrent Mark Sweep) 收集器</h5><p><img src="http://i.imgur.com/xQq1fON.jpg" alt=""></p>
+<ul>
+<li>以获取最短回收停顿时间为目标，基于“标记-清除”算法实现</li>
+<li>步骤：<ul>
+<li>初始标记（initial mark）：GC停顿，标记下GC Roots能直接关联到的对象</li>
+<li>并发标记（concurrent mark）：进行GC Roots Tracing，不GC停顿</li>
+<li>重新标记（remark）：GC停顿，修正并发标记期间因程序运作导致的标记变动</li>
+<li>并发清除（concurrent sweep）无GC停顿，和用户线程一起工作</li>
+</ul>
+</li>
+<li>优点：并发收集、低停顿</li>
+<li>缺点：<ul>
+<li>会占用CPU资源导致应用变慢，吞吐量降低。</li>
+<li>无法处理浮动垃圾（Floating Garbage，并发清理时用户线程生成的垃圾，需要留到下一次GC时再清理），可能出现Concurrent Mode Failure导致Full GC。</li>
+<li>“标记-清除”算法导致空间碎片过多</li>
+</ul>
+</li>
+</ul>
+<h5 id="G1-Garbage-First-收集器"><a href="#G1-Garbage-First-收集器" class="headerlink" title="G1(Garbage-First) 收集器"></a>G1(Garbage-First) 收集器</h5><p><img src="http://i.imgur.com/dwQWQWJ.jpg" alt=""></p>
+<ul>
+<li>G1收集器将堆划分为多个大小相等的独立区域（Region），新生代和老年代不再是物理隔离，都是一部分Region的集合。</li>
+<li>G1 通过跟踪各个Region里面的垃圾堆积的价值大小，维护一个优先列表，每次根据允许的收集时间，优先回收价值最大的Region。</li>
+<li>G1实现的时候region之间对象的互相引用，可以通过Remembered Set数据结构记录相关引用信息来避免全堆扫描。</li>
+<li>G1 运作步骤：<ul>
+<li>初始标记（Initial Marking）：标记GC Roots能直接关联到的对象，需要GC停顿。</li>
+<li>并发标记（Concurrent Marking）：从GC Root开始对堆内对象进行可达性分析</li>
+<li>最终标记（Final Marking）：修正并发标记期间因为用户线程运行导致标记产生变动的记录，将变化记录在Remembered Set Logs中，并合并到Remembered Set中，需要GC停顿。</li>
+<li>筛选回收（Live Data Counting and Evacuation）：对各个Region的回收价值和成本进行排序，根据用户期望的GC停顿时间来制定回收计划。</li>
+</ul>
+</li>
+<li>特点：<ul>
+<li>并行与并发：并行减少GC停顿，并发让Java程序继续运行</li>
+<li>分代收集</li>
+<li>空间整合：从整体看基于“标记-整理”算法实现，从局部（两个Region之间）看是基于“复制”算法实现的。该两种算法都不会产生内存空间碎片，防止因为非配大对象无法找到连续内存空间而提前触发GC。</li>
+<li>可预测的停顿：能建立可预测的停顿时间模型，让使用者制定长度为M毫秒的时间片段内垃圾收集时间不能超过N毫秒。通过避免在整个堆中进行垃圾收集来实现。</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-内存分配与回收策略"><a href="#5-内存分配与回收策略" class="headerlink" title="5. 内存分配与回收策略"></a>5. 内存分配与回收策略</h4><p>如何给对象分配内存以及回收分配给对象的内存，有如下几条普遍的内存分配规则：</p>
+<h5 id="对象优先在Eden分配"><a href="#对象优先在Eden分配" class="headerlink" title="对象优先在Eden分配"></a>对象优先在Eden分配</h5><p>大多情况下，对象在新生代Eden区中分配，当Eden去没有足够空间时，发起一次Minor GC。</p>
+<h5 id="大对象直接进入老年代"><a href="#大对象直接进入老年代" class="headerlink" title="大对象直接进入老年代"></a>大对象直接进入老年代</h5><p>大于 -XX:PretenureSizeThreshold 设置值的对象直接在老年代中分配，避免Eden区以及两个Survivor之间发生大量的内存复制。</p>
+<h5 id="长期存活的对象进入老年代"><a href="#长期存活的对象进入老年代" class="headerlink" title="长期存活的对象进入老年代"></a>长期存活的对象进入老年代</h5><p>每个对象都有一个年龄计数器，对象在Eden出生后，每经历一次Minor GC，年龄加一，当年龄增加到一定程度会被移入到老年代。</p>
+<h5 id="动态对象年龄判断"><a href="#动态对象年龄判断" class="headerlink" title="动态对象年龄判断"></a>动态对象年龄判断</h5><p>如果Survivor空间中相同年龄所有对象大小总和大于Survivor空间的一半，则大于等于该年龄的对象直接进入老年代，不用等年龄限制。</p>
+<h5 id="空间分配担保"><a href="#空间分配担保" class="headerlink" title="空间分配担保"></a>空间分配担保</h5><p>因为复制算法中，老年代要作为新生代的分配担保。当Minor GC后存活对象容量大于Survivor空间时，就需要把多余的对象移入到老年代，所以老年代最大可用的连续空间要大于新生代所有对象总空间，这样才能保证Minor GC是确保安全的。可以通过设置 HandlePromotionFailure 来允许担保失败，当担保失败发生时，会触发一次Full GC。</p>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://lanourain.github.io/2017/06/22/JVM-2-GC/" data-id="cj4ctlgyk0000h7bwdgp14h7r" class="article-share-link">Share</a><div class="tags"><a href="/tags/java/">java</a><a href="/tags/jvm/">jvm</a></div><div class="post-nav"><a href="/2017/06/20/JVM-1-Memory-Model/" class="next">深入理解Java虚拟机 - Java内存模型</a></div><div id="disqus_thread"><script>var disqus_shortname = 'lanourain@gmail.com';
+var disqus_identifier = '2017/06/22/JVM-2-GC/';
+var disqus_title = '深入理解Java虚拟机 - 垃圾收集器与内存分配策略';
+var disqus_url = 'http://lanourain.github.io/2017/06/22/JVM-2-GC/';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//lanourain@gmail.com.disqus.com/count.js" async></script></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://lanourain.github.io"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/daily/" style="font-size: 15px;">daily</a> <a href="/tags/软件工程/" style="font-size: 15px;">软件工程</a> <a href="/tags/ansible/" style="font-size: 15px;">ansible</a> <a href="/tags/Team/" style="font-size: 15px;">Team</a> <a href="/tags/Management/" style="font-size: 15px;">Management</a> <a href="/tags/project/" style="font-size: 15px;">project</a> <a href="/tags/Reading/" style="font-size: 15px;">Reading</a> <a href="/tags/design-patterns/" style="font-size: 15px;">design_patterns</a> <a href="/tags/动漫/" style="font-size: 15px;">动漫</a> <a href="/tags/历史/" style="font-size: 15px;">历史</a> <a href="/tags/bit/" style="font-size: 15px;">bit</a> <a href="/tags/algorithm/" style="font-size: 15px;">algorithm</a> <a href="/tags/effective-java/" style="font-size: 15px;">effective java</a> <a href="/tags/jvm/" style="font-size: 15px;">jvm</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/06/22/JVM-2-GC/">深入理解Java虚拟机 - 垃圾收集器与内存分配策略</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/20/JVM-1-Memory-Model/">深入理解Java虚拟机 - Java内存模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/18/effective-java/">effective java 笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/17/singleton/">单例模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/17/promise_patterns/">Promise模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/28/OKR-Summary/">OKR简介</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/22/use_bit_manipulation_to_solve_problems_easily_and_efficiently/">使用位运算解决问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/Gintama/">浪客剑心和银魂背后的历史</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/08/proxy_pattern_and_dynamic_proxy/">代理模式和动态代理</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/16/ansible_basic/">ansible基础教程</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> Recent Comments</i></div><script type="text/javascript" src="//lanourain@gmail.com.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> Blogroll</i></div><ul></ul><a href="http://blog.yongbin.me/" title="El Psy Congroo" target="_blank">El Psy Congroo</a><ul></ul><a href="https://majiahui.github.io/" title="Jiahui's Blog" target="_blank">Jiahui's Blog</a><ul></ul><a href="http://czmonster.com/" title="Day Day Up" target="_blank">Day Day Up</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© <a href="/." rel="nofollow">Lanourain's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
