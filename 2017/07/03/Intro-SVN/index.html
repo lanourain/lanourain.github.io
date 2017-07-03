@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta name="google-site-verification" content="WIBYTs2Vy14HvrnHixbBGSFenycHFvmqQKvWEK4PogU"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="lanourain"><title>SVN简介 | Lanourain's blog</title><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/5.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">SVN简介</h1><a id="logo" href="/.">Lanourain's blog</a><p class="description">I fight, so you don't have to.</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">SVN简介</h1><div class="post-meta">Jul 3, 2017<script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><a data-disqus-identifier="2017/07/03/Intro-SVN/" href="/2017/07/03/Intro-SVN/#disqus_thread" class="disqus-comment-count"></a><div class="post-content"><p>SVN，一个版本控制系统，用于团队协作开发。</p>
+<h4 id="版本控制："><a href="#版本控制：" class="headerlink" title="版本控制："></a>版本控制：</h4><p>标记不同的版本需要使用编号，SVN使用Revision来作为版本编号。<br>Revision是一个随着提交递增且唯一的自然数，每次新的提交Revision都会加一。<br>Revision应用于整个仓库，不只在单个文件上生效。（修改了仓库中一个文件，提交之后其实整个仓库Revision都增加了，每个Revision可以理解为整个仓库在某次提交之后的快照。）</p>
+<p><img src="http://i.imgur.com/KFZXY2Y.jpg" alt=""></p>
+<h4 id="协作："><a href="#协作：" class="headerlink" title="协作："></a>协作：</h4><p>协作开发需要关注问题就是多人修改同一个文件时如何保证修改正确的合并起来。File Sharing和Lock-Modify-Unlock模式都有各自的缺陷，SVN使用的Copy-Modify-Merge模式很好的解决了这个问题，如下是对三种模式的介绍。</p>
+<h5 id="File-Sharing，会有操作覆盖的问题。"><a href="#File-Sharing，会有操作覆盖的问题。" class="headerlink" title="File Sharing，会有操作覆盖的问题。"></a>File Sharing，会有操作覆盖的问题。</h5><p><img src="http://i.imgur.com/FXKsL8j.jpg" alt=""></p>
+<h5 id="Lock-Modify-Unlock，同时只能有一个人在读写，影响协作效率。"><a href="#Lock-Modify-Unlock，同时只能有一个人在读写，影响协作效率。" class="headerlink" title="Lock-Modify-Unlock，同时只能有一个人在读写，影响协作效率。"></a>Lock-Modify-Unlock，同时只能有一个人在读写，影响协作效率。</h5><p><img src="http://i.imgur.com/E43AsDq.jpg" alt=""></p>
+<h5 id="Copy-Modify-Merge，SVN采用的模式，不会有覆盖的问题，且不影响相互的工作进度。"><a href="#Copy-Modify-Merge，SVN采用的模式，不会有覆盖的问题，且不影响相互的工作进度。" class="headerlink" title="Copy-Modify-Merge，SVN采用的模式，不会有覆盖的问题，且不影响相互的工作进度。"></a>Copy-Modify-Merge，SVN采用的模式，不会有覆盖的问题，且不影响相互的工作进度。</h5><p><img src="http://i.imgur.com/0ras44w.jpg" alt=""></p>
+<p><img src="http://i.imgur.com/dT0LGTR.jpg" alt=""></p>
+<h4 id="版本管理"><a href="#版本管理" class="headerlink" title="版本管理"></a>版本管理</h4><p>SVN常用于代码版本管理，常用的版本管理模型分为两种。</p>
+<h5 id="主线开发模型："><a href="#主线开发模型：" class="headerlink" title="主线开发模型："></a>主线开发模型：</h5><p><img src="http://i.imgur.com/BcBRGwc.jpg" alt=""></p>
+<ol>
+<li>在trunk上进行版本开发</li>
+<li>版本完成开发并测试通过，准备发布，从trunk copy 一个release分支出来进行发布。</li>
+<li>新版本继续在trunk上进行开发，重复步骤1和2</li>
+<li>如果有一些特殊的功能模块需要独立开发（比如可能无法和版本一起上线），从trunk上copy Feature Branch进行开发，完成开发后merge 回 trunk 进行发布。</li>
+</ol>
+<p>使用场景：维护人员较少，定期发布，团队成员一般都是一起做一个版本的功能，且同时发布。</p>
+<h5 id="release主线，功能分支开发模型"><a href="#release主线，功能分支开发模型" class="headerlink" title="release主线，功能分支开发模型"></a>release主线，功能分支开发模型</h5><p><img src="http://i.imgur.com/TxTpxEj.jpg" alt=""></p>
+<ol>
+<li>主线为release版本，用作发布</li>
+<li>有新版本或新功能，从release中copy一个feature branch来，进行开发，开发完成之后merge 回release分支进行发布。</li>
+</ol>
+<p>使用场景：维护人员多，发布频繁，无固定发布周期，多功能分支。</p>
+<h5 id="合并"><a href="#合并" class="headerlink" title="合并"></a>合并</h5><p>上述两种方案都涉及到两种合并：</p>
+<ul>
+<li>feature merge 回主线。</li>
+<li>feature 定期和主线代码同步，将主线代码merge到feature中。<ul>
+<li>SVN建议尽量避免该种情况，因为merge起来冲突会比较多。实在有必要，建议只定期merge有价值的改动</li>
+<li>完成同步操作，将主线merge到feature上和从主线copy一个分支将feature merge上去，两种做法本质上没有区别，后者并不会避免冲突的发生，同时后者还多操作。</li>
+</ul>
+</li>
+</ul>
+<h4 id="冲突："><a href="#冲突：" class="headerlink" title="冲突："></a>冲突：</h4><p>因为是协作开发，所以会有各种分支，在分支合并时肯定会有冲突，SVN中将冲突分为两种。</p>
+<ul>
+<li>text conflicts：两个人同时修改了相同文件，且修改无法很清楚的merge（修改了同一行，但是修改不同），会报该问题。</li>
+<li>tree conflicts：目录层面的conflicts。本地修改了一个别人删除的文件，在更新merge时会报该问题。其他可以归为目录conflicts的操作都会报该问题。</li>
+</ul>
+<h4 id="特殊情况举例"><a href="#特殊情况举例" class="headerlink" title="特殊情况举例"></a>特殊情况举例</h4><p>除了上述提到的，feature可能需要和主分支保持定期同步，同时还可能需要和别的feature保持同步，我们在以release为主线的情况下举例该情况，并支持一些错误的操作方案以及正确的操作方案，有助于加深对Revision和conflicts的理解。</p>
+<h5 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h5><ol>
+<li>release作为稳定主线版本。</li>
+<li>feature-1从release copy出来进行开发。</li>
+<li>feature-2从release copy出来进行开发。</li>
+<li>feature-2在开发期间需要使用feature-1的新功能，且在feature-1上线前就要使用（feature-1 在 feature-2前上线），所以需要把feature-1 同步到feature-2上。</li>
+</ol>
+<p><img src="http://i.imgur.com/tDLjTFu.jpg" alt=""></p>
+<h5 id="错误操作"><a href="#错误操作" class="headerlink" title="错误操作"></a>错误操作</h5><ol>
+<li>feature-1 merge到了feature-2中。</li>
+<li>feature-1 继续后续开发，开发完成后 merge 回release，发布release。</li>
+<li>feature-2 开发完成后，merge回release时，在feature-1中新增的文件（feature-2中未修改）产生了tree conflict。</li>
+</ol>
+<p><img src="http://i.imgur.com/XeR0xSP.jpg" alt=""></p>
+<p>产生conflict原因分析：feature-1 merge进feature-2后，相当于feature-1的改动在feature-2上实现了一遍，会生成一个新的Revision = X；然后将feature-1 merge进release，feature-1的改动会在release上生成一个新的Revision = Y（X != Y，两者除了Y比X大其他没有任何关系，可以理解为两次单独的修改）；后续feature-2 merge 到 release时，对于在feature-1中新增的文件，相当于在两个不同的Revision中，该文件都被新建，所以产生了tree conflicts。</p>
+<h5 id="正确操作"><a href="#正确操作" class="headerlink" title="正确操作"></a>正确操作</h5><ol>
+<li>从release中copy出feature-3</li>
+<li>将feature-1 merge 到feature-3</li>
+<li>从feature-3 中copy出 feature-4 来进行feature-1 的后续开发，完成开发后merge回release。</li>
+<li>将feature-2 merge到 feature-3中，在feature-3中继续feature-2的开发。</li>
+</ol>
+<p><img src="http://i.imgur.com/9UNOuuS.jpg" alt=""></p>
+<h5 id="核心理念"><a href="#核心理念" class="headerlink" title="核心理念"></a>核心理念</h5><p>不要把feature merge到两个分支中，同时这两个分支后续还需要进行merge，这样会出现冲突。因为相当于两个分支上各自进行了feature的开发，两者并无关联关系，虽然merge来源一致。</p>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://lanourain.github.io/2017/07/03/Intro-SVN/" data-id="cj4o2iwmk0000rp6ap90rcpu7" class="article-share-link">Share</a><div class="tags"><a href="/tags/SVN/">SVN</a><a href="/tags/版本管理/">版本管理</a></div><div class="post-nav"><a href="/2017/06/27/ArrayList-And-LinkedList/" class="next">ArrayList和LinkedList浅析</a></div><div id="disqus_thread"><script>var disqus_shortname = 'lanourain@gmail.com';
+var disqus_identifier = '2017/07/03/Intro-SVN/';
+var disqus_title = 'SVN简介';
+var disqus_url = 'http://lanourain.github.io/2017/07/03/Intro-SVN/';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//lanourain@gmail.com.disqus.com/count.js" async></script></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://lanourain.github.io"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/动漫/" style="font-size: 15px;">动漫</a> <a href="/tags/daily/" style="font-size: 15px;">daily</a> <a href="/tags/软件工程/" style="font-size: 15px;">软件工程</a> <a href="/tags/ansible/" style="font-size: 15px;">ansible</a> <a href="/tags/Team/" style="font-size: 15px;">Team</a> <a href="/tags/Management/" style="font-size: 15px;">Management</a> <a href="/tags/project/" style="font-size: 15px;">project</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/design-patterns/" style="font-size: 15px;">design_patterns</a> <a href="/tags/Reading/" style="font-size: 15px;">Reading</a> <a href="/tags/历史/" style="font-size: 15px;">历史</a> <a href="/tags/bit/" style="font-size: 15px;">bit</a> <a href="/tags/algorithm/" style="font-size: 15px;">algorithm</a> <a href="/tags/effective-java/" style="font-size: 15px;">effective java</a> <a href="/tags/jvm/" style="font-size: 15px;">jvm</a> <a href="/tags/jdk/" style="font-size: 15px;">jdk</a> <a href="/tags/SVN/" style="font-size: 15px;">SVN</a> <a href="/tags/版本管理/" style="font-size: 15px;">版本管理</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/07/03/Intro-SVN/">SVN简介</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/27/ArrayList-And-LinkedList/">ArrayList和LinkedList浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/21/JVM-2-GC/">深入理解Java虚拟机 - 垃圾收集器与内存分配策略</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/20/JVM-1-Memory-Model/">深入理解Java虚拟机 - Java内存模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/18/effective-java/">effective java 笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/17/singleton/">单例模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/17/promise_patterns/">Promise模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/28/OKR-Summary/">OKR简介</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/22/use_bit_manipulation_to_solve_problems_easily_and_efficiently/">使用位运算解决问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/Gintama/">浪客剑心和银魂背后的历史</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> Recent Comments</i></div><script type="text/javascript" src="//lanourain@gmail.com.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> Blogroll</i></div><ul></ul><a href="http://blog.yongbin.me/" title="El Psy Congroo" target="_blank">El Psy Congroo</a><ul></ul><a href="https://majiahui.github.io/" title="Jiahui's Blog" target="_blank">Jiahui's Blog</a><ul></ul><a href="http://czmonster.com/" title="Day Day Up" target="_blank">Day Day Up</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© <a href="/." rel="nofollow">Lanourain's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
