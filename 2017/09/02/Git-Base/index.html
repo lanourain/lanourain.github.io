@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta name="google-site-verification" content="WIBYTs2Vy14HvrnHixbBGSFenycHFvmqQKvWEK4PogU"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="lanourain"><title>Git基础 | Lanourain's blog</title><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/5.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Git基础</h1><a id="logo" href="/.">Lanourain's blog</a><p class="description">I fight, so you don't have to.</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Git基础</h1><div class="post-meta">Sep 2, 2017<script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><a data-disqus-identifier="2017/09/02/Git-Base/" href="/2017/09/02/Git-Base/#disqus_thread" class="disqus-comment-count"></a><div class="post-content"><p>Git 是一个分布式版本控制系统，本文对其基本的一些内容进行了简单整理，具体参考 Pro Git前三章。</p>
+<h3 id="1-基本工作原理："><a href="#1-基本工作原理：" class="headerlink" title="1. 基本工作原理："></a>1. 基本工作原理：</h3><h4 id="分布式"><a href="#分布式" class="headerlink" title="分布式"></a>分布式</h4><p>和SVN等集中化的版本控制系统不同，客户端存储了代码仓库的完整镜像。由于有完整镜像，所以大部分操作都是本地执行，在需要时才和服务端通信<br><img src="https://i.imgur.com/DqyAa3k.jpg" alt=""></p>
+<h4 id="记录快照，非差异"><a href="#记录快照，非差异" class="headerlink" title="记录快照，非差异"></a>记录快照，非差异</h4><p>Git 更像是把数据看作是对小型文件系统的一组快照。每次你提交更新，或在 Git 中保存项目状态时，它主要对当时的全部文件制作一个快照并保存这个快照的索引。为了高效，如果文件没有修改，Git 不再重新存储该文件，而是只保留一个链接指向之前存储的文件。Git 对待数据更像是一个快照流。<br>（表面上看是存储了每个文件每个修改版本的快照，但是出于容量的考虑，Git底层会有压缩操作，将文件快照改成存储差异。）<br><img src="https://i.imgur.com/eAmBjTH.jpg" alt=""></p>
+<h4 id="使用Hash值索引文件"><a href="#使用Hash值索引文件" class="headerlink" title="使用Hash值索引文件"></a>使用Hash值索引文件</h4><p>存储所有数据（管理文件，Git内部使用对象等）都根据文件内容计算一个40个十六进制字符组成的Hash值，使用该Hash值索引文件，而不是使用文件名。</p>
+<h4 id="工作区域划分"><a href="#工作区域划分" class="headerlink" title="工作区域划分"></a>工作区域划分</h4><ul>
+<li>Git仓库(.git)：保存项目元数据和对象数据库</li>
+<li>工作目录：对项目的某个版本独立提取出来的内容</li>
+<li>暂存区域：一个文件，保存了下次将提交的文件列表信息，一般在 Git 仓库目录中，也被称作“索引”<br><img src="https://i.imgur.com/Ux55mik.jpg" alt=""></li>
+</ul>
+<h4 id="文件状态"><a href="#文件状态" class="headerlink" title="文件状态"></a>文件状态</h4><p>分两大类状态，已跟踪和未跟踪，已跟踪中可以细分三个状态。文件状态的流转相当于就是操作步骤。</p>
+<ul>
+<li>已跟踪(Tracked)：被纳入了版本控制的文件，在上一次快照中有它们的记录<ul>
+<li>未修改or已提交(Committed, Unmodified)：已保存到本地数据库</li>
+<li>已修改(Modified)：修改了文件，但是还未保存到数据库</li>
+<li>已暂存(Staged)：对已修改文件做了标记，包含在下次提交的快照中</li>
+</ul>
+</li>
+<li>未跟踪(Untracked)：既不存在于上次快照的记录中，也没有放入暂存区<br><img src="https://i.imgur.com/8h3wtpb.jpg" alt=""></li>
+</ul>
+<h3 id="2-分支基础"><a href="#2-分支基础" class="headerlink" title="2. 分支基础"></a>2. 分支基础</h3><h4 id="Git对象基础"><a href="#Git对象基础" class="headerlink" title="Git对象基础"></a>Git对象基础</h4><p>为了实现Git的版本管理，以及记录不同时刻的文件快照，Git有三类基本对象：</p>
+<ul>
+<li>blob 对象：文件快照</li>
+<li>tree 对象：记录着目录结构和 blob 对象索引</li>
+<li>commit 对象（提交时生成）：包含指向暂存区内容快照指针，提交信息，父对象指针。</li>
+</ul>
+<p>初次提交时对象之间的关系：<br><img src="https://i.imgur.com/OMLACAq.jpg" alt=""></p>
+<p>多次提交之后对象关系：<br><img src="https://i.imgur.com/crxx8DV.jpg" alt=""></p>
+<h4 id="分支简介"><a href="#分支简介" class="headerlink" title="分支简介"></a>分支简介</h4><h5 id="分支原理"><a href="#分支原理" class="headerlink" title="分支原理"></a>分支原理</h5><p>Git 的分支，其实本质上仅仅是指向提交对象的可变指针。创建分支只是创建了一个可以移动的新的指针，所以Git创建分支的成本非常低。<br><img src="https://i.imgur.com/DkOjmNI.jpg" alt=""></p>
+<p>HEAD 指针用来指向当前所在的本地分支（将 HEAD 想象为当前分支的别名，checkout是修改了HEAD指针指向的分支）。<br>在分支上进行提交，其对应的分支指针会前移到最新的提交对象。<br><img src="https://i.imgur.com/LGaIlpc.jpg" alt=""></p>
+<h5 id="远程分支"><a href="#远程分支" class="headerlink" title="远程分支"></a>远程分支</h5><h6 id="本地仓库和远程仓库的关系："><a href="#本地仓库和远程仓库的关系：" class="headerlink" title="本地仓库和远程仓库的关系："></a>本地仓库和远程仓库的关系：</h6><p>远程引用是对远程仓库的引用(指针)，包括分支、标签等等。对于远程仓库中的分支，本地都会存一个远程跟踪分支，它们是你不能移动的本地引用，当你做任何网络通信操作时，它们会自动移动。</p>
+<p>克隆远程仓库之后本地仓库和远程仓库的关系：<br><img src="https://i.imgur.com/el0QwPj.jpg" alt=""></p>
+<p>远程仓库如果有提交，本地仓库没有进行拉取的话，本地仓库记录的远程仓库指针是不会移动。<br><img src="https://i.imgur.com/Dny5NUx.jpg" alt=""></p>
+<p>连接远程仓库拉去更新后：<br><img src="https://i.imgur.com/YMx4xSd.jpg" alt=""></p>
+<h6 id="跟踪分支"><a href="#跟踪分支" class="headerlink" title="跟踪分支"></a>跟踪分支</h6><p>从一个远程跟踪分支检出一个本地分支会自动创建一个叫做 “跟踪分支”(有时候也叫做 “上游分支”)。跟踪分支是与远程分支有直接关系的本地分支。如果在一个跟踪分支上输入git pull，Git能自动地识别去哪个服务器上抓取、合并到哪个分支</p>
+<h5 id="分支合并"><a href="#分支合并" class="headerlink" title="分支合并"></a>分支合并</h5><ul>
+<li>快进合并(Fast-forward)：顺着一个分支可以达到另外一个分支，则合并只是简单将指针向前推进。<br><img src="https://i.imgur.com/8eEqSAO.jpg" alt=""></li>
+</ul>
+<p><img src="https://i.imgur.com/01W0NAV.jpg" alt=""></p>
+<ul>
+<li>三方合并：将两个分支的最新快照和两者最近的公共祖先进行三方合并。<br><img src="https://i.imgur.com/WzbGzZh.jpg" alt=""><br><img src="https://i.imgur.com/rflWfyY.jpg" alt=""></li>
+</ul>
+<h5 id="分支变基"><a href="#分支变基" class="headerlink" title="分支变基"></a>分支变基</h5><p>rebase（变基）是将提交到某一分支上的所有修改都移至另一分支上（不会合并成一个修改），类似重新播放一样。实质是丢弃一些现有的提交，然后相应地新建一些内容一样但实际上不同的提交。变基使得提交历史更加整洁。但是切记<strong>不要对在你的仓库外有副本的分支执行变基</strong>。</p>
+<ul>
+<li>step 1：对experiment分支进行变基</li>
+</ul>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ </span>git checkout experiment</div><div class="line"><span class="variable">$ </span>git rebase master</div></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/i7Yaz5Z.jpg" alt=""></p>
+<ul>
+<li>step 1：master快速合并</li>
+</ul>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git checkout <span class="keyword">master</span></div><div class="line"><span class="title">$</span> git merge <span class="literal">master</span></div></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/DFakHf8.jpg" alt=""></p>
+<h3 id="3-基本命令"><a href="#3-基本命令" class="headerlink" title="3. 基本命令"></a>3. 基本命令</h3><ul>
+<li>配置Git：git config</li>
+<li>初始化仓库：git init</li>
+<li>把不在暂存区和未提交的文件放入暂存区：git add fileName</li>
+<li>暂存区文件提交到仓库：git commit -m ‘message’</li>
+<li>克隆仓库：git clone [url]</li>
+<li>文件状态简览：git status</li>
+<li>提交文件：git commit</li>
+<li>查看日志：git log</li>
+<li>远程仓库相关操作（查看或编辑关联）：git remote</li>
+<li>从远程仓库中抓取与拉取（只抓取，不merge）：git fetch [remote-name]</li>
+<li>合并分支：git merge branchName</li>
+<li>拉去并合并：git pull = git fetch + git merge</li>
+<li>推送到远程仓库：git push [remote-name] [branch- name]</li>
+<li>打标签：git tag</li>
+<li>创建分支：git branch branchName</li>
+<li>查询日志：git log</li>
+<li>分支切换：git checkout branchName</li>
+<li>分支管理：git branch  （创建、删除、展示branch）</li>
+<li>远程分支管理：git remote （添加、删除、展示远程仓库）</li>
+</ul>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://lanourain.github.io/2017/09/02/Git-Base/" data-id="cj72z2fpu00036w66trwrl8e0" class="article-share-link">Share</a><div class="tags"><a href="/tags/Git/">Git</a><a href="/tags/版本管理/">版本管理</a></div><div class="post-nav"><a href="/2017/07/03/Intro-SVN/" class="next">SVN简介</a></div><div id="disqus_thread"><script>var disqus_shortname = 'lanourain@gmail.com';
+var disqus_identifier = '2017/09/02/Git-Base/';
+var disqus_title = 'Git基础';
+var disqus_url = 'http://lanourain.github.io/2017/09/02/Git-Base/';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//lanourain@gmail.com.disqus.com/count.js" async></script></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://lanourain.github.io"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/jvm/" style="font-size: 15px;">jvm</a> <a href="/tags/daily/" style="font-size: 15px;">daily</a> <a href="/tags/Git/" style="font-size: 15px;">Git</a> <a href="/tags/版本管理/" style="font-size: 15px;">版本管理</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/jdk/" style="font-size: 15px;">jdk</a> <a href="/tags/动漫/" style="font-size: 15px;">动漫</a> <a href="/tags/历史/" style="font-size: 15px;">历史</a> <a href="/tags/SVN/" style="font-size: 15px;">SVN</a> <a href="/tags/软件工程/" style="font-size: 15px;">软件工程</a> <a href="/tags/Team/" style="font-size: 15px;">Team</a> <a href="/tags/Management/" style="font-size: 15px;">Management</a> <a href="/tags/ansible/" style="font-size: 15px;">ansible</a> <a href="/tags/Reading/" style="font-size: 15px;">Reading</a> <a href="/tags/design-patterns/" style="font-size: 15px;">design_patterns</a> <a href="/tags/effective-java/" style="font-size: 15px;">effective java</a> <a href="/tags/project/" style="font-size: 15px;">project</a> <a href="/tags/bit/" style="font-size: 15px;">bit</a> <a href="/tags/algorithm/" style="font-size: 15px;">algorithm</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/09/02/Git-Base/">Git基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/03/Intro-SVN/">SVN简介</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/27/ArrayList-And-LinkedList/">ArrayList和LinkedList浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/21/JVM-2-GC/">深入理解Java虚拟机 - 垃圾收集器与内存分配策略</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/20/JVM-1-Memory-Model/">深入理解Java虚拟机 - Java内存模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/18/effective-java/">effective java 笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/17/singleton/">单例模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/17/promise_patterns/">Promise模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/28/OKR-Summary/">OKR简介</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/22/use_bit_manipulation_to_solve_problems_easily_and_efficiently/">使用位运算解决问题</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> Recent Comments</i></div><script type="text/javascript" src="//lanourain@gmail.com.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> Blogroll</i></div><ul></ul><a href="http://blog.yongbin.me/" title="El Psy Congroo" target="_blank">El Psy Congroo</a><ul></ul><a href="https://majiahui.github.io/" title="Jiahui's Blog" target="_blank">Jiahui's Blog</a><ul></ul><a href="http://czmonster.com/" title="Day Day Up" target="_blank">Day Day Up</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© <a href="/." rel="nofollow">Lanourain's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
