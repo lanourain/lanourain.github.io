@@ -1,0 +1,101 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta name="google-site-verification" content="WIBYTs2Vy14HvrnHixbBGSFenycHFvmqQKvWEK4PogU"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="lanourain"><title>同城散送业务浅析 | Lanourain's blog</title><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/5.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">同城散送业务浅析</h1><a id="logo" href="/.">Lanourain's blog</a><p class="description">I fight, so you don't have to.</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">同城散送业务浅析</h1><div class="post-meta">Dec 4, 2017<script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><a data-disqus-identifier="2017/12/04/同城散送业务浅析/" href="/2017/12/04/同城散送业务浅析/#disqus_thread" class="disqus-comment-count"></a><div class="post-content"><p>同城散送业务浅析。</p>
+<h3 id="1-角色"><a href="#1-角色" class="headerlink" title="1. 角色"></a>1. 角色</h3><ul>
+<li>平台：承载数据，与各个角色进行交互，连接角色，促进各个角色交互</li>
+<li>客户：输入数据到平台，获取相关服务<ul>
+<li>服务需求方：下单到平台，期望相应服务</li>
+<li>服务提供方：登记可提供的服务信息到平台，商家或个人</li>
+</ul>
+</li>
+<li>运力：在平台上接单，完成配送，服务于客户。<ul>
+<li>服务支队：以小队为基础</li>
+<li>众包：以个人为基础，大众零碎运力</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-基础准备功能"><a href="#2-基础准备功能" class="headerlink" title="2. 基础准备功能"></a>2. 基础准备功能</h3><h4 id="2-1-服务提供方"><a href="#2-1-服务提供方" class="headerlink" title="2.1 服务提供方"></a>2.1 服务提供方</h4><ul>
+<li>基本流程<ul>
+<li>资质认证</li>
+<li>创建用户</li>
+<li>发布服务</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-2-运力"><a href="#2-2-运力" class="headerlink" title="2.2 运力"></a>2.2 运力</h4><ul>
+<li>基本流程<ul>
+<li>创建用户</li>
+<li>资质认证</li>
+<li>基本培训</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-3-服务需求方"><a href="#2-3-服务需求方" class="headerlink" title="2.3 服务需求方"></a>2.3 服务需求方</h4><ul>
+<li>基本流程<ul>
+<li>创建用户</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-下单配送主流程"><a href="#3-下单配送主流程" class="headerlink" title="3. 下单配送主流程"></a>3. 下单配送主流程</h3><p><img src="https://i.imgur.com/cWWfmZl.jpg" alt=""></p>
+<p><strong>注：</strong></p>
+<ul>
+<li>分配运力分为平台派单和运力自主抢单。</li>
+</ul>
+<h3 id="4-扩展功能"><a href="#4-扩展功能" class="headerlink" title="4. 扩展功能"></a>4. 扩展功能</h3><h4 id="4-1-服务提供方"><a href="#4-1-服务提供方" class="headerlink" title="4.1 服务提供方"></a>4.1 服务提供方</h4><ul>
+<li>订单信息实时查看（配送路线、需求方、运力信息等） + 统计</li>
+<li>经营数据统计分析（营业额、订单量、评分等）</li>
+<li>其他针对不同服务提供方的个性化服务（如素材采购、贷款等）</li>
+<li>运力信息改派</li>
+</ul>
+<h4 id="4-2-运力"><a href="#4-2-运力" class="headerlink" title="4.2 运力"></a>4.2 运力</h4><h5 id="通用功能"><a href="#通用功能" class="headerlink" title="通用功能"></a>通用功能</h5><ul>
+<li>订单信息实时查看（配送路线、提供方、需求方信息等） + 统计</li>
+<li>经营数据统计统计（配送量、收入、评分等）</li>
+<li>个性化服务（保险、装备等）</li>
+</ul>
+<h5 id="针对服务支队的功能"><a href="#针对服务支队的功能" class="headerlink" title="针对服务支队的功能"></a>针对服务支队的功能</h5><ul>
+<li>支队成员管理</li>
+<li>支队调度订单分配给特定成员</li>
+<li>支队成员实时状态信息查看（位置、接单数量等）</li>
+<li>支队运作数据查看 + 统计（整体 + 成员，订单 + 财务等）</li>
+</ul>
+<h3 id="5-考核"><a href="#5-考核" class="headerlink" title="5. 考核"></a>5. 考核</h3><p>为了使网络流畅，各方角色都能有更好的体验，需要加入考核来提高网络质量。</p>
+<h4 id="5-1-服务提供方"><a href="#5-1-服务提供方" class="headerlink" title="5.1 服务提供方"></a>5.1 服务提供方</h4><h5 id="考核点"><a href="#考核点" class="headerlink" title="考核点"></a>考核点</h5><ul>
+<li>响应需求速度（分为接单速度和准备完成速度）</li>
+<li>服务需求方评价</li>
+</ul>
+<h5 id="惩罚"><a href="#惩罚" class="headerlink" title="惩罚"></a>惩罚</h5><ul>
+<li>降低曝光率</li>
+<li>展示负面数据</li>
+</ul>
+<h4 id="5-2-服务需求方"><a href="#5-2-服务需求方" class="headerlink" title="5.2 服务需求方"></a>5.2 服务需求方</h4><h5 id="考核点-1"><a href="#考核点-1" class="headerlink" title="考核点"></a>考核点</h5><ul>
+<li>订单取消率</li>
+</ul>
+<h5 id="惩罚-1"><a href="#惩罚-1" class="headerlink" title="惩罚"></a>惩罚</h5><ul>
+<li>多收取费用</li>
+</ul>
+<h4 id="5-3-运力"><a href="#5-3-运力" class="headerlink" title="5.3 运力"></a>5.3 运力</h4><h5 id="考核点-2"><a href="#考核点-2" class="headerlink" title="考核点"></a>考核点</h5><ul>
+<li>时间<ul>
+<li>按时送达率</li>
+<li>超时送达率（超长时间送达）</li>
+</ul>
+</li>
+<li>业务量<ul>
+<li>完成订单量</li>
+<li>订单取消率</li>
+</ul>
+</li>
+<li>评价 + 投诉</li>
+<li>运力绩效排名</li>
+</ul>
+<h5 id="惩罚（奖励则操作相反）"><a href="#惩罚（奖励则操作相反）" class="headerlink" title="惩罚（奖励则操作相反）"></a>惩罚（奖励则操作相反）</h5><ul>
+<li>罚款（单票收入减少 + 大笔罚款）</li>
+<li>奖励减少</li>
+<li>限制接单数量</li>
+</ul>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://lanourain.github.io/2017/12/04/同城散送业务浅析/" data-id="cjary9yr8001uw98ou4t1z2al" class="article-share-link">Share</a><div class="tags"><a href="/tags/业务/">业务</a></div><div class="post-nav"><a href="/2017/09/08/HashMap/" class="next">HashMap &amp;&amp; Hashtable浅析</a></div><div id="disqus_thread"><script>var disqus_shortname = 'lanourain@gmail.com';
+var disqus_identifier = '2017/12/04/同城散送业务浅析/';
+var disqus_title = '同城散送业务浅析';
+var disqus_url = 'http://lanourain.github.io/2017/12/04/同城散送业务浅析/';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//lanourain@gmail.com.disqus.com/count.js" async></script></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://lanourain.github.io"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/Management/" style="font-size: 15px;">Management</a> <a href="/tags/daily/" style="font-size: 15px;">daily</a> <a href="/tags/jdk/" style="font-size: 15px;">jdk</a> <a href="/tags/软件工程/" style="font-size: 15px;">软件工程</a> <a href="/tags/Git/" style="font-size: 15px;">Git</a> <a href="/tags/版本管理/" style="font-size: 15px;">版本管理</a> <a href="/tags/动漫/" style="font-size: 15px;">动漫</a> <a href="/tags/历史/" style="font-size: 15px;">历史</a> <a href="/tags/SVN/" style="font-size: 15px;">SVN</a> <a href="/tags/jvm/" style="font-size: 15px;">jvm</a> <a href="/tags/Team/" style="font-size: 15px;">Team</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/ansible/" style="font-size: 15px;">ansible</a> <a href="/tags/Reading/" style="font-size: 15px;">Reading</a> <a href="/tags/effective-java/" style="font-size: 15px;">effective java</a> <a href="/tags/design-patterns/" style="font-size: 15px;">design_patterns</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/Spring/" style="font-size: 15px;">Spring</a> <a href="/tags/业务/" style="font-size: 15px;">业务</a> <a href="/tags/project/" style="font-size: 15px;">project</a> <a href="/tags/bit/" style="font-size: 15px;">bit</a> <a href="/tags/algorithm/" style="font-size: 15px;">algorithm</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/12/04/同城散送业务浅析/">同城散送业务浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/08/HashMap/">HashMap && Hashtable浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/02/Git-Base/">Git基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/03/Intro-SVN/">SVN简介</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/27/ArrayList-And-LinkedList/">ArrayList和LinkedList浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/21/JVM-2-GC/">深入理解Java虚拟机 - 垃圾收集器与内存分配策略</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/20/JVM-1-Memory-Model/">深入理解Java虚拟机 - Java内存模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/18/effective-java/">effective java 笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/17/singleton/">单例模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/17/promise_patterns/">Promise模式</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> Recent Comments</i></div><script type="text/javascript" src="//lanourain@gmail.com.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> Blogroll</i></div><ul></ul><a href="http://blog.yongbin.me/" title="El Psy Congroo" target="_blank">El Psy Congroo</a><ul></ul><a href="https://majiahui.github.io/" title="Jiahui's Blog" target="_blank">Jiahui's Blog</a><ul></ul><a href="http://czmonster.com/" title="Day Day Up" target="_blank">Day Day Up</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© <a href="/." rel="nofollow">Lanourain's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
