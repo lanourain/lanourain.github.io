@@ -1,0 +1,145 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta name="google-site-verification" content="WIBYTs2Vy14HvrnHixbBGSFenycHFvmqQKvWEK4PogU"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="lanourain"><title>spring 技术内幕 - 笔记（1）- IoC容器实现 | Lanourain's blog</title><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/5.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">spring 技术内幕 - 笔记（1）- IoC容器实现</h1><a id="logo" href="/.">Lanourain's blog</a><p class="description">I fight, so you don't have to.</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">spring 技术内幕 - 笔记（1）- IoC容器实现</h1><div class="post-meta">Jan 11, 2017<span> | </span><span class="category"><a href="/categories/Java/">Java</a></span><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><a data-disqus-identifier="2017/01/11/spring-internals-note-IoC/" href="/2017/01/11/spring-internals-note-IoC/#disqus_thread" class="disqus-comment-count"></a><div class="post-content"><h3 id="Spring-IoC容器实现"><a href="#Spring-IoC容器实现" class="headerlink" title="Spring IoC容器实现"></a>Spring IoC容器实现</h3><h4 id="1-容器："><a href="#1-容器：" class="headerlink" title="1. 容器："></a>1. 容器：</h4><ul>
+<li>IoC容器自身Spring实现分成两个系列：<ul>
+<li>BeanFactory（简单）：体现容器的基本功能规范<ul>
+<li>getBean()：从容器中获取相应实例。（添加相应条件，如名字、类型、构造参数等）</li>
+<li>containsBean()：判断是否包含某个Bean</li>
+<li>isSingleton，isPrototype：判断Bean的类型。</li>
+<li>isTypeMatch()：判断指定名字的Bean的Class类型是否特性的Class类型</li>
+<li>getType()：查询指定名字的Class类型</li>
+<li>getAliases()：查询指定Bean的所有别名</li>
+</ul>
+</li>
+<li>ApplicationContext应用上下文（高级）：简单容器基础上，添加了框架特性，对应用环境做了适配。<ul>
+<li>扩展MessageSource接口，支持国际化、多语言</li>
+<li>继承ApplicationEventPublisher接口，引入事件机制，和Bean的生命周期结合方便Bean的管理</li>
+<li>推荐使用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>容器管理的对象<ul>
+<li>BeanDefinition：抽象对Bean的定义，管理容器内的各种对象、依赖关系。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-容器实现设计："><a href="#2-容器实现设计：" class="headerlink" title="2. 容器实现设计："></a>2. 容器实现设计：</h4><p>IoC容器主要接口设计：<br><img src="https://i.imgur.com/DWcJ4Qt.jpg" alt=""></p>
+<ul>
+<li>第一条设计主线（以BeanFactory为核心）：<ul>
+<li>interface BeanFactory：定义基本的容器规范，定义了一系列的接口方法，可以使用不同的bean检索方法。</li>
+<li>interface HierarchicalBeanFactory extends BeanFactory：继承BeanFactory基础上，增加了getParentBeanFactory() 功能，使BeanFactory具备双亲容器的管理功能。（双亲委托模式）</li>
+<li>interface ConfigurableBeanFactory extends HierarchicalBeanFactory, SingletonBeanRegistry：定义了对BeanFactory的配置功能，比如设置双亲容器，配置Bean后置处理器等。（各种配置项）因为其包含双亲容器的配置，所以是继承HierarchicalBeanFactory的。</li>
+<li>class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements ConfigurableListableBeanFactory, BeanDefinitionRegistry, Serializable：IoC容器简单具体实现，其他IoC容器基于该类扩展新功能实现。XMLBeanFactory、ApplicationContext等。可以作为一个默认的功能完成的IoC容器使用，XMLBeanFactory继承后，增加了部分新功能。</li>
+</ul>
+</li>
+<li>第二条设计主线（以ApplicationContext为核心）：<ul>
+<li>interface ListableBeanFactory extends BeanFactory：细化了许多BeanFactory的接口功能，主要是罗列bean实例的功能。</li>
+<li>interface ApplicationContext extends EnvironmentCapable, ListableBeanFactory, HierarchicalBeanFactory, MessageSource, ApplicationEventPublisher, ResourcePatternResolver：通过继承BeanFactory相关接口具备容器基本功能，通过继承MessageSource等接口赋予了高级容器特性支持。ApplicationContext不继承ConfigurableBeanFactory，我的理解是因为有各种高级容器特性的配置都分类在相应接口中了，和BeanFactory主线的配置设计不同，所以不继承。</li>
+</ul>
+</li>
+<li>DefaultListableBeanFactory、XMLBeanFactory、ApplicationContext等都是容器附加了某种功能的具体实现，也就是容器体系中的具体容器产品。</li>
+<li>spring接口独立设计，每个接口都有其特定功能，遵循接口隔离原则</li>
+</ul>
+<h4 id="3-容器实现设计："><a href="#3-容器实现设计：" class="headerlink" title="3. 容器实现设计："></a>3. 容器实现设计：</h4><p>容器的核心启动操作（refresh）在不同类型的容器下都是类似的，所以这部分步骤都会在基类中进行实现，具体的容器类（如下两个），只需要实现部分和它自身设计相关的功能就可（如Resource定位方式不同等）。</p>
+<h5 id="XmlBeanFactory"><a href="#XmlBeanFactory" class="headerlink" title="XmlBeanFactory"></a>XmlBeanFactory</h5><p>以XmlBeanFactory为例（BeanFactory基础系列，和应用上下文比只提供最基本的IoC容器功能）：（读取XML文件定义BeanDefinition的IoC容器<br>）（@deprecated as of Spring 3.1 in favor of {@link DefaultListableBeanFactory} and {@link XmlBeanDefinitionReader}）</p>
+<ul>
+<li>Resource：定义BeanDefinition 信息来源（指定文件、xml、URL等），spring用来封装I/O操作的类。</li>
+<li>XmlBeanDefinitionReader：读取器，XML信息处理，读取XML中的BeanDefinition信息</li>
+<li>构造需要的Resource，作为参数传递给BeanFactory构造函数，然后IoC容器可以定位到BeanDefinition信息来对Bean完成容器的初始化和依赖注入。</li>
+<li>初始化XmlBeanFactory需要传入Resource对象，然后使用reader.loadBeanDefinitions(resource)从resource中加载对应信息。<br><img src="https://i.imgur.com/Ydn6Zb9.jpg" alt=""></li>
+</ul>
+<p><img src="https://i.imgur.com/0oJy2Zj.jpg" alt=""><br><img src="https://i.imgur.com/LC5BQYc.jpg" alt=""></p>
+<h5 id="FileSystemXmlApplicationContext"><a href="#FileSystemXmlApplicationContext" class="headerlink" title="FileSystemXmlApplicationContext"></a>FileSystemXmlApplicationContext</h5><p>以FileSystemXmlApplicationContext为例（ApplicationContext系列，BeanFactory基础上提供附加服务）：（读取XML定义文件，但是XML文件来源定义支持URL、文件路径、多路径等，同时支持模式匹配文件名等）</p>
+<ul>
+<li><p>应用上下文主要功能已经在AbstractXmlApplicationContext中实现。FileSystemXmlApplicationContext只需要实现和它自身设计相关的两个功能。</p>
+<ul>
+<li><p>实例化上下文，启动IoC容器refresh()过程（refresh主要是IoC容器启动的操作，不同容器实现步骤都是差不多的，所以封装在基类中。）<br><img src="https://i.imgur.com/DdJ4pfU.jpg" alt=""></p>
+</li>
+<li><p>获取Resource，根据设计确定如何从文件系统中加载XML的BeanDefinition定义资源。如下是定义了FileSystemXmlApplicationContext对应的Resource获取方法。<br><img src="https://i.imgur.com/4l1cisk.jpg" alt=""></p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/Wxipz2X.jpg" alt=""></p>
+<h5 id="BeanFactory-和-ApplicationContext区别"><a href="#BeanFactory-和-ApplicationContext区别" class="headerlink" title="BeanFactory 和 ApplicationContext区别"></a>BeanFactory 和 ApplicationContext区别</h5><ul>
+<li>ApplicationContext提供了加载不同Resource的读取器（BeanDefinitionReader）的实现。 BeanFactory需要配置特定的读取器。（如上可见，BeanFactory需要配置特定的BeanDefinitionReader，而ApplicationContext则只确定Resource即可，根据不同Resource制定对应Reader的实现已经封装在基类中）</li>
+</ul>
+<h4 id="4-IoC容器初始化过程"><a href="#4-IoC容器初始化过程" class="headerlink" title="4. IoC容器初始化过程"></a>4. IoC容器初始化过程</h4><p>IoC初始化是为了建立起BeanDefinition的映射进行依赖注入，该过程不涉及到依赖注入。<br>IoC初始化调用refresh()启动，分为三个过程：</p>
+<ul>
+<li>BeanDefinition的Resource定位：BeanDefinition的资源定位，由ResourceLoader通过统一的Resource接口完成。Resource对各种形式的BeanDefinition的使用提供了统一接口。</li>
+<li>载入：定义好的Bean表示成IoC容器内部数据接口，也就是BeanDefinition，BeanDefinition是POJO对象在IoC容器中的抽象</li>
+<li>注册：向IoC容器注册BeanDefinition的过程，调用BeanDefinitionRegistry接口完成，使用HashMap存储BeanDefinition数据</li>
+</ul>
+<p>注：refresh()不包含Bean依赖注入的实现，依赖注入发生在第一次通过getBean向容器索取Bean的时候（可通过为Bean配置lazyinit使依赖注入在初始化时完成）</p>
+<h5 id="4-1-BeanDefinition的Resource定位（找水源）"><a href="#4-1-BeanDefinition的Resource定位（找水源）" class="headerlink" title="4.1 BeanDefinition的Resource定位（找水源）"></a>4.1 BeanDefinition的Resource定位（找水源）</h5><p>以FileSystemXmlApplicationContext为例：<br>支持XML定义BeanDefinition的ApplicationContext，指定以文件形式的BeanDefinition读入，文件可以使用文件路径和URL表示。<br>继承图：<br><img src="https://i.imgur.com/7psRGBw.jpg" alt=""></p>
+<p><img src="https://i.imgur.com/b5wIHla.jpg" alt=""></p>
+<p>FileSystemXmlApplicationContext使用DefaultListableBeanFactory作为IoC容器供ApplicationContext使用，构造器中调用refresh()方法完成容器的初始化。（refresh的方法步骤）</p>
+<p>步骤：</p>
+<ul>
+<li>创建新的BeanFactory</li>
+<li>创建对应Resource的BeanDefinitionReader，其中包含对应的ResourceReader</li>
+<li>BeanDefinitionReader根据传入的参数获取相应的Resource</li>
+<li>后续通过获取的Resource来进行BeanDefinition的载入</li>
+</ul>
+<h5 id="4-2-BeanDefinition的解析和载入（打水）"><a href="#4-2-BeanDefinition的解析和载入（打水）" class="headerlink" title="4.2 BeanDefinition的解析和载入（打水）"></a>4.2 BeanDefinition的解析和载入（打水）</h5><p>把定义的BeanDefinition在IoC容器中转化成一个Spring内部表示的数据结构，BeanDefinition数据在IoC容器中通过一个HashMap来保持和维护，后IoC容器根据BeanDefinition信息进行注册。</p>
+<p>以AbstractApplicationContext#refresh 为入口，描述了ApplicationContext的初始化过程（Bean的生命周期）：</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">refresh</span><span class="params">()</span> <span class="keyword">throws</span> BeansException, IllegalStateException </span>&#123;</div><div class="line">		<span class="keyword">synchronized</span> (<span class="keyword">this</span>.startupShutdownMonitor) &#123;</div><div class="line">			<span class="comment">// Prepare this context for refreshing.</span></div><div class="line">			prepareRefresh();</div><div class="line"></div><div class="line">			<span class="comment">// Tell the subclass to refresh the internal bean factory.</span></div><div class="line">			<span class="comment">// 在子类中启动refreshBeanFactory()</span></div><div class="line">			<span class="comment">// 创建新的BeanFactory，并从对应的Resource中load BeanDefinition存储到factory中</span></div><div class="line">			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();</div><div class="line"></div><div class="line">			<span class="comment">// Prepare the bean factory for use in this context.</span></div><div class="line">			prepareBeanFactory(beanFactory);</div><div class="line"></div><div class="line">			<span class="keyword">try</span> &#123;</div><div class="line">				<span class="comment">// Allows post-processing of the bean factory in context subclasses.</span></div><div class="line">				<span class="comment">// 设置BeanFactory的后处理器</span></div><div class="line">				postProcessBeanFactory(beanFactory);</div><div class="line"></div><div class="line">				<span class="comment">// Invoke factory processors registered as beans in the context.</span></div><div class="line">				<span class="comment">// 调用BeanFactory的后处理器，这些处理器是在Bean定义中向容器注册的</span></div><div class="line">				invokeBeanFactoryPostProcessors(beanFactory);</div><div class="line"></div><div class="line">				<span class="comment">// Register bean processors that intercept bean creation.</span></div><div class="line">				<span class="comment">// 注册Bean的后处理器，在Bean创建过程中调用</span></div><div class="line">				registerBeanPostProcessors(beanFactory);</div><div class="line"></div><div class="line">				<span class="comment">// Initialize message source for this context.</span></div><div class="line">				<span class="comment">// 对上下文中的消息源进行初始化</span></div><div class="line">				initMessageSource();</div><div class="line"></div><div class="line">				<span class="comment">// Initialize event multicaster for this context.</span></div><div class="line">				<span class="comment">// 初始化上下文中的事件机制</span></div><div class="line">				initApplicationEventMulticaster();</div><div class="line"></div><div class="line">				<span class="comment">// Initialize other special beans in specific context subclasses.</span></div><div class="line">				<span class="comment">// 初始化其他特殊的Bean</span></div><div class="line">				onRefresh();</div><div class="line"></div><div class="line">				<span class="comment">// Check for listener beans and register them.</span></div><div class="line">				<span class="comment">// 检查监听Bean，并且将这些Bean向容器注入</span></div><div class="line">				registerListeners();</div><div class="line"></div><div class="line">				<span class="comment">// Instantiate all remaining (non-lazy-init) singletons.</span></div><div class="line">				<span class="comment">// 实例化所有的（non-lazy-init）单件</span></div><div class="line">				finishBeanFactoryInitialization(beanFactory);</div><div class="line"></div><div class="line">				<span class="comment">// Last step: publish corresponding event.</span></div><div class="line">				<span class="comment">// 发布容器事件，结束refresh过程</span></div><div class="line">				finishRefresh();</div><div class="line">			&#125;</div><div class="line"></div><div class="line">			<span class="keyword">catch</span> (BeansException ex) &#123;</div><div class="line">				<span class="keyword">if</span> (logger.isWarnEnabled()) &#123;</div><div class="line">					logger.warn(<span class="string">"Exception encountered during context initialization - "</span> +</div><div class="line">							<span class="string">"cancelling refresh attempt: "</span> + ex);</div><div class="line">				&#125;</div><div class="line"></div><div class="line">				<span class="comment">// Destroy already created singletons to avoid dangling resources.</span></div><div class="line">				<span class="comment">// 为防止Bean资源占用，在异常处理时，销毁已经在前面过程中生成的单例Bean</span></div><div class="line">				destroyBeans();</div><div class="line"></div><div class="line">				<span class="comment">// Reset 'active' flag.</span></div><div class="line">				<span class="comment">// 重置 active 标志</span></div><div class="line">				cancelRefresh(ex);</div><div class="line"></div><div class="line">				<span class="comment">// Propagate exception to caller.</span></div><div class="line">				<span class="keyword">throw</span> ex;</div><div class="line">			&#125;</div><div class="line"></div><div class="line">			<span class="keyword">finally</span> &#123;</div><div class="line">				<span class="comment">// Reset common introspection caches in Spring's core, since we</span></div><div class="line">				<span class="comment">// might not ever need metadata for singleton beans anymore...</span></div><div class="line">				resetCommonCaches();</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/ce8JNjh.jpg" alt=""></p>
+<p>AbstractXmlApplicationContext#loadBeanDefinitions(org.springframework.beans.factory.support.DefaultListableBeanFactory) 载入BeanDefinition：过程大概就是初始化读取器（reader），在IoC容器（DefaultListableBeanFactory）中设置好该读取器，将Resource载入并传给Reader完成读取和载入。</p>
+<ul>
+<li>通过调用XML解析器得到document对象</li>
+<li>将document对象转换成BeanDefinition载入到IoC容器中，并在容器中建立数据映射。</li>
+</ul>
+<h5 id="4-3-BeanDefinition在IoC容器中的注册"><a href="#4-3-BeanDefinition在IoC容器中的注册" class="headerlink" title="4.3 BeanDefinition在IoC容器中的注册"></a>4.3 BeanDefinition在IoC容器中的注册</h5><p>BeanDefinition信息载入完成后，在DefaultListableBeanFactory中，使用Hashmap来存储载入的BeanDefinition（注册）。</p>
+<p><img src="https://i.imgur.com/h0hhy2Q.jpg" alt=""></p>
+<p>完成了BeanDefinition的注册，就完成了IoC容器启动的初始化过程，此时BeanFactory中已经建立了所有bean的配置信息，BeanDefinition已经可以被容器使用。容器基于这些数据实现依赖反转（依赖注入）。</p>
+<h4 id="5-IoC容器依赖注入"><a href="#5-IoC容器依赖注入" class="headerlink" title="5. IoC容器依赖注入"></a>5. IoC容器依赖注入</h4><p>依赖注入是在用户首次向容器索要Bean的时候触发的，（可以配置lazy-init让容器对Bean预初始化），在调用BeanFactory.getBean() 时触发。</p>
+<p><img src="https://i.imgur.com/swSg6ux.jpg" alt=""></p>
+<p>大体流程：</p>
+<ul>
+<li>从单例bean缓存中尝试获取bean，如果存在已创建过的bean，则返回该bean</li>
+<li>如果当前BeanFactory中不存在beanName匹配的BeanDefinition，则递归去parentBeanFactory中查找</li>
+<li>获取到对应的BeanDefinition，递归实例化依赖的bean</li>
+<li>根据当前bean的scope，创建Singleton(单例)或prototype(原型) 或其他类型的bean实例</li>
+<li>对创建的Bean进行类型检查，无误则返回。</li>
+</ul>
+<h4 id="6-容器其他相关特性的设计和实现"><a href="#6-容器其他相关特性的设计和实现" class="headerlink" title="6. 容器其他相关特性的设计和实现"></a>6. 容器其他相关特性的设计和实现</h4><h5 id="6-1-ApplicationContext和Bean的初始化和销毁"><a href="#6-1-ApplicationContext和Bean的初始化和销毁" class="headerlink" title="6.1 ApplicationContext和Bean的初始化和销毁"></a>6.1 ApplicationContext和Bean的初始化和销毁</h5><p><img src="https://i.imgur.com/jKBYVZL.jpg" alt=""></p>
+<p>IoC容器的初始化（prepareBeanFactory）在BeanFactory创建完成并加载完BeanDefinition后进行。spring IoC容器提供了相关的功能，可以让应用定制Bean的初始化和销毁过程。</p>
+<p>Bean的简单生命周期：</p>
+<ul>
+<li>Bean实例的创建</li>
+<li>为Bean实例设置属性</li>
+<li>调用Bean的初始化方法</li>
+<li>应用可以通过IoC容器使用Bean</li>
+<li>当容器关闭时，调用Bean的销毁方法。</li>
+</ul>
+<p>Bean初始化过程：</p>
+<ul>
+<li>调用一系列的aware接口，把相关的BeanName、BeanClassLoader/BeanFactory注入到Bean中</li>
+<li>如果Bean实现了InitializingBean接口，则对Bean进行回调，调用afterPropertiesSet方法</li>
+<li>调用Bean配置的initMethod方法</li>
+</ul>
+<p>Bean销毁过程：</p>
+<ul>
+<li>调用postProcessBeforeDestruction</li>
+<li>调用Bean的destroy方法</li>
+<li>调用Bean自定义销毁方法</li>
+</ul>
+<h5 id="6-2-lazy-init属性和预实例化"><a href="#6-2-lazy-init属性和预实例化" class="headerlink" title="6.2 lazy-init属性和预实例化"></a>6.2 lazy-init属性和预实例化</h5><p>在refresh过程中，调用了一把getBean实现…</p>
+<h5 id="6-3-FactoryBean的实现"><a href="#6-3-FactoryBean的实现" class="headerlink" title="6.3 FactoryBean的实现"></a>6.3 FactoryBean的实现</h5><p>FactoryBean为应用生成需要的对象，这些对象同一般的bean不同，需要经过特殊处理，如ProxyFactoryBean等。在getBean中对应FactoryBean使用其getObject方法获取对象实例。</p>
+<p>Factory提供了很好的封装机制。</p>
+<p>工厂模式简介：<br><img src="https://i.imgur.com/qmai4uj.jpg" alt=""></p>
+<h5 id="6-4-BeanPostProcessor的实现"><a href="#6-4-BeanPostProcessor的实现" class="headerlink" title="6.4 BeanPostProcessor的实现"></a>6.4 BeanPostProcessor的实现</h5><p>后置处理器在Bean实例化后，初始化前后（AbstractAutowireCapableBeanFactory#invokeInitMethods）提供回调入口，进行相关操作。</p>
+<p><img src="https://i.imgur.com/AZ4dgEi.jpg" alt=""></p>
+<h5 id="6-5-autowiring（自动依赖装配）的实现"><a href="#6-5-autowiring（自动依赖装配）的实现" class="headerlink" title="6.5 autowiring（自动依赖装配）的实现"></a>6.5 autowiring（自动依赖装配）的实现</h5><p>配置好autowiring属性，IoC容器会根据属性反射自动查找属性的类型或名字，然后根据属性的类型或名字来自动匹配IoC容器中的Bean，自动完成依赖注入。</p>
+<p>在执行依赖注入时(AbstractAutowireCapableBeanFactory#populateBean)，处理一般Bean之前，先对autowiring属性进行处理。根据Bean的属性名，执行getBean索取Bean，然后创建PropertyValues用于后续实例化Bean时的属性填充。</p>
+<h5 id="6-6-Bean的依赖检查？？？"><a href="#6-6-Bean的依赖检查？？？" class="headerlink" title="6.6 Bean的依赖检查？？？"></a>6.6 Bean的依赖检查？？？</h5><p>AbstractAutowireCapableBeanFactory#checkDependencies<br>在Bean定义中设置dependency-check属性指定依赖检查模式？？</p>
+<h5 id="Bean对IoC容器的感知"><a href="#Bean对IoC容器的感知" class="headerlink" title="Bean对IoC容器的感知"></a>Bean对IoC容器的感知</h5><p>实际使用场景？？？<br>在Bean中直接对IoC容器进行操作，需要在Bean中设定对容器的感知，通过特定的aware接口完成。在设置Bean的属性之后，调用初始化回调方法之前（initializeBean中），Spring会调用aware接口中的setter方法，是相应信息在Bean中保存下来。<br><img src="https://i.imgur.com/CHa9dnw.jpg" alt=""></p>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://lanourain.github.io/2017/01/11/spring-internals-note-IoC/" data-id="cjcc5eci8001raabwffux1owt" class="article-share-link">Share</a><div class="tags"><a href="/tags/Java/">Java</a><a href="/tags/Spring/">Spring</a></div><div class="post-nav"><a href="/2017/01/12/2017-year-plan/" class="pre">2017年度计划</a><a href="/2016/12/18/debugging-teams/" class="next">《进化-从孤胆极客到高效团队》笔记</a></div><div id="disqus_thread"><script>var disqus_shortname = 'lanourain@gmail.com';
+var disqus_identifier = '2017/01/11/spring-internals-note-IoC/';
+var disqus_title = 'spring 技术内幕 - 笔记（1）- IoC容器实现';
+var disqus_url = 'http://lanourain.github.io/2017/01/11/spring-internals-note-IoC/';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//lanourain@gmail.com.disqus.com/count.js" async></script></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://lanourain.github.io"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/Management/" style="font-size: 15px;">Management</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/daily/" style="font-size: 15px;">daily</a> <a href="/tags/软件工程/" style="font-size: 15px;">软件工程</a> <a href="/tags/动漫/" style="font-size: 15px;">动漫</a> <a href="/tags/历史/" style="font-size: 15px;">历史</a> <a href="/tags/Git/" style="font-size: 15px;">Git</a> <a href="/tags/版本管理/" style="font-size: 15px;">版本管理</a> <a href="/tags/SVN/" style="font-size: 15px;">SVN</a> <a href="/tags/jvm/" style="font-size: 15px;">jvm</a> <a href="/tags/Team/" style="font-size: 15px;">Team</a> <a href="/tags/jdk/" style="font-size: 15px;">jdk</a> <a href="/tags/ansible/" style="font-size: 15px;">ansible</a> <a href="/tags/Reading/" style="font-size: 15px;">Reading</a> <a href="/tags/design-patterns/" style="font-size: 15px;">design_patterns</a> <a href="/tags/effective-java/" style="font-size: 15px;">effective java</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/Spring/" style="font-size: 15px;">Spring</a> <a href="/tags/业务/" style="font-size: 15px;">业务</a> <a href="/tags/bit/" style="font-size: 15px;">bit</a> <a href="/tags/algorithm/" style="font-size: 15px;">algorithm</a> <a href="/tags/project/" style="font-size: 15px;">project</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/12/04/同城散送业务浅析/">同城散送业务浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/08/HashMap/">HashMap && Hashtable浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/02/Git-Base/">Git基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/03/Intro-SVN/">SVN简介</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/27/ArrayList-And-LinkedList/">ArrayList和LinkedList浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/21/JVM-2-GC/">深入理解Java虚拟机 - 垃圾收集器与内存分配策略</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/20/JVM-1-Memory-Model/">深入理解Java虚拟机 - Java内存模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/18/effective-java/">effective java 笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/17/singleton/">单例模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/17/promise_patterns/">Promise模式</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-comment-o"> Recent Comments</i></div><script type="text/javascript" src="//lanourain@gmail.com.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> Blogroll</i></div><ul></ul><a href="http://blog.yongbin.me/" title="El Psy Congroo" target="_blank">El Psy Congroo</a><ul></ul><a href="https://majiahui.github.io/" title="Jiahui's Blog" target="_blank">Jiahui's Blog</a><ul></ul><a href="http://czmonster.com/" title="Day Day Up" target="_blank">Day Day Up</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© <a href="/." rel="nofollow">Lanourain's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
